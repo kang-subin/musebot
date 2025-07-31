@@ -1,15 +1,24 @@
-from services.intent_service import IntentService
+from services.chat_service import ChatService
 
 def main():
-    intent_service = IntentService()
+    chat_service = ChatService()
+
+    print("=== Chat Service Test ===")
+    print("종료하려면 'exit' 입력\n")
 
     while True:
-        user_input = input("\n사용자 입력 (종료하려면 'exit'): ")
+        user_input = input("User: ")
+
         if user_input.lower() == "exit":
+            print("종료합니다.")
             break
 
-        intent = intent_service.detect_intent(user_input)
-        print(f"[의도 분석 결과] {intent}")
+        result = chat_service.process_message(user_input)
+
+        print("\n[Result]")
+        for key, value in result.items():
+            print(f"{key}: {value}")
+        print("\n")
 
 if __name__ == "__main__":
     main()
