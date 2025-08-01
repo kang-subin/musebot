@@ -8,6 +8,7 @@
 - translated_output: 번역된 최종 텍스트.
 - inferred_source_lang: 원문의 언어 코드 (예: 'ko', 'en', 'ja'). 만약 추정하기 어려우면 'auto'라고 표기.
 - target_lang_code: 번역된 결과물의 언어 코드. 반드시 요청된 목표 언어로 표기 (예: 'en', 'ja').
+
 ---
 사용자 요청:
 {user_input}

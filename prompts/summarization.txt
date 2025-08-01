@@ -8,3 +8,8 @@
 - key_bullet_points: 요약의 주요 핵심 내용들을 3~5가지의 핵심 불릿 포인트로 정리한 리스트. 각 포인트는 짧은 문장.
 - original_text_word_count: 원문 텍스트의 대략적인 단어 수 (숫자).
 - summary_text_word_count: 요약된 텍스트의 대략적인 단어 수 (숫자).
+
+---
+사용자 요청:
+{user_input}
+---
