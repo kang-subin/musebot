@@ -24,7 +24,7 @@ class ChatService:
         self.model_map = {
             "translation": TranslationResponse,
             "summarization": SummarizationResponse,
-            "sentiment_analysis": MentalCareResponse
+            "mental_care": MentalCareResponse
         }
 
     def process_message(self, user_input: str) -> dict:
@@ -55,8 +55,17 @@ class ChatService:
             f"{processed_prompt_template_content}\n\n"
             f"{format_instructions}"
         )
-
+        
+        print("\n[DEBUG] === LLM REQUEST ===")
+        print("[DEBUG] User Input:", user_input)
+        print("[DEBUG] Intent:", intent)
+        print("[DEBUG] Prompt Sent To LLM:\n", final_prompt)
+        
         raw_output = self.llm_service.run(final_prompt)
+        
+        print("\n[DEBUG] === LLM RAW RESPONSE ===")
+        print(raw_output)
+        
         parsed_result = self.parser_service.parse_llm_response(
             raw_llm_output=raw_output,
             pydantic_model_type=model_type,
