@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
-DEFAULT_LLM_MODEL = os.getenv("DEFAULT_LLM_MODEL", "gemini-1.5-flash")
+DEFAULT_LLM_MODEL = os.getenv("DEFAULT_LLM_MODEL")
 DATABASE_URL = os.getenv("DATABASE_URL", None)
 DEFAULT_LANGUAGE = "ko"
 DEBUG_MODE = os.getenv("DEBUG_MODE", "False").lower() == "true"
