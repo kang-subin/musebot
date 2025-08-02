@@ -1,7 +1,7 @@
 from typing import Type
 from services.intent_service import IntentService
 from services.prompt_service import PromptService
-from services.tool_service import ToolService
+from services.tool_service import ToolService, ToolResult
 from services.response_parser_service import ResponseParserService
 from core.llm_service import LLMService
 from core.models import (
@@ -19,7 +19,7 @@ class ChatService:
         self.intent_service = IntentService()
         self.prompt_service = PromptService()
         self.tool_service = ToolService()
-        self.llm_service = LLMService()
+        self.llm_service = LLMService(streaming=True)
         self.parser_service = ResponseParserService()
         self.model_map = {
             "translation": TranslationResponse,
@@ -30,13 +30,14 @@ class ChatService:
     def process_message(self, user_input: str) -> dict:
         intent = self.intent_service.detect_intent(user_input)
 
-        if intent == "date_calculation":
+        tool_result: ToolResult | None = self.tool_service.execute_tool(intent, user_input)
+        if tool_result and tool_result.success:
             return {
-                "response_text": self.tool_service.calculate_days_from_text(user_input),
+                "response_text": tool_result.message,
                 "detected_intent": intent,
                 "confidence_score": 1.0
             }
-
+        
         prompt_template = self.prompt_service.get_prompt(intent)
         if not prompt_template:
             return {

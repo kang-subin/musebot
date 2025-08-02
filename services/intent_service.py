@@ -46,4 +46,3 @@ class IntentService:
             if intent in text:
                 return intent
         return "general_chat"
-
