@@ -19,7 +19,7 @@ class ChatService:
         self.intent_service = IntentService()
         self.prompt_service = PromptService()
         self.tool_service = ToolService()
-        self.llm_service = LLMService()
+        self.llm_service = LLMService(streaming=True)
         self.parser_service = ResponseParserService()
         self.model_map = {
             "translation": TranslationResponse,
