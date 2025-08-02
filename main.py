@@ -1,3 +1,4 @@
+import json
 from services.chat_service import ChatService
 
 def main():
@@ -13,12 +14,14 @@ def main():
             print("종료합니다.")
             break
 
-        result = chat_service.process_message(user_input)
+        result, prompt_used = chat_service.process_message(user_input)
 
-        print("\n[Result]")
-        for key, value in result.items():
-            print(f"{key}: {value}")
-        print("\n")
+        if prompt_used:
+            print("[DEBUG] Prompt Used:")
+            print(prompt_used)
+
+        print("\n[RESULT]")
+        print(json.dumps(result, ensure_ascii=False, indent=2))
 
 if __name__ == "__main__":
     main()
