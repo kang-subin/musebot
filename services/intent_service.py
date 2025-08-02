@@ -9,20 +9,22 @@ class IntentService:
             "date_calculation": ["며칠", "d-day", "디데이"],
             "mental_care" : ["감정", "sentiment", "기분"]
         }
-        self.intent_mapping = {
-            "translation": ["translation", "번역"],
-            "summarization": ["summarization", "요약"],
-            "date_calculation": ["date", "며칠", "d-day"],
-            "mental_care" : ["감정", "sentiment", "기분"]
-        }
+        
+        self.intent_list = [
+            "translation",
+            "summarization",
+            "date_calculation",
+            "time_conversion",
+            "mental_care",
+            "general_chat"
+        ]
+
 
     def detect_intent(self, user_input: str) -> str:
         for intent, keywords in self.intent_keywords.items():
             if any(kw.lower() in user_input.lower() for kw in keywords):
                 return intent
-            
-   
-            
+               
         prompt = f"""
         아래 문장의 의도를 분류하세요.
         가능한 카테고리:
@@ -30,15 +32,18 @@ class IntentService:
         문장: "{user_input}"
         """
         
-        print("[2차 의도 검증:",user_input)
+        print("[2차 의도 검증]")
         
         llm_result = self.llm_service.run(prompt)
         return self._normalize_intent(llm_result)
     
-
     def _normalize_intent(self, text: str) -> str:
         text = text.lower()
-        for intent, keywords in self.intent_mapping.items():
-            if any(kw in text for kw in keywords):
+        if text in self.intent_list:
+            return text
+        
+        for intent in self.intent_list:
+            if intent in text:
                 return intent
         return "general_chat"
+
