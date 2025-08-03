@@ -1,5 +1,5 @@
 import os
-from core.db_service import DBService
+from infrastructure.db_service import DBService
 
 class PromptService:
 
