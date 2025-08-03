@@ -3,15 +3,19 @@ from services.intent_service import IntentService
 from services.prompt_service import PromptService
 from services.tool_service import ToolService, ToolResult
 from services.response_parser_service import ResponseParserService
-from core.llm_service import LLMService
+from infrastructure.llm_service import LLMService
+from langchain.output_parsers import PydanticOutputParser
+from utils.json_utils import extract_json_from_text
 from core.models import (
     ChatResponse,
     TranslationResponse,
     SummarizationResponse,
     MentalCareResponse,
+    TimeConversionResponse,
+    DateCalculationResponse,
     BaseModel
 )
-from langchain.output_parsers import PydanticOutputParser
+
 
 
 class ChatService:
@@ -19,12 +23,14 @@ class ChatService:
         self.intent_service = IntentService()
         self.prompt_service = PromptService()
         self.tool_service = ToolService()
-        self.llm_service = LLMService(streaming=True)
+        self.llm_service = LLMService()
         self.parser_service = ResponseParserService()
         self.model_map = {
             "translation": TranslationResponse,
             "summarization": SummarizationResponse,
-            "mental_care": MentalCareResponse
+            "mental_care": MentalCareResponse,
+            "time_conversion": TimeConversionResponse,
+            "date_calculation": DateCalculationResponse
         }
 
     def process_message(self, user_input: str) -> dict:
@@ -36,7 +42,7 @@ class ChatService:
                 "response_text": tool_result.message,
                 "detected_intent": intent,
                 "confidence_score": 1.0
-            }
+            }, None
         
         prompt_template = self.prompt_service.get_prompt(intent)
         if not prompt_template:
@@ -53,14 +59,16 @@ class ChatService:
         processed_prompt_template_content = prompt_template.format(user_input=user_input)
 
         final_prompt = (
-            f"{processed_prompt_template_content}\n\n"
-            f"{format_instructions}"
+        f"{processed_prompt_template_content}\n\n"
+        f"{format_instructions}"
         )
-        
+
         raw_output = self.llm_service.run(final_prompt)
+        
+        extracted_json = extract_json_from_text(raw_output)
      
         parsed_result = self.parser_service.parse_llm_response(
-            raw_llm_output=raw_output,
+            raw_llm_output=raw_output or extracted_json,
             pydantic_model_type=model_type,
             context_intent=intent
         )

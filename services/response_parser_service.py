@@ -1,7 +1,7 @@
 from langchain.output_parsers import PydanticOutputParser
 from pydantic import ValidationError
 from pydantic_core import ValidationError as ValidationErrorV2
-from core.log_service import LogService
+from infrastructure.log_service import LogService
 from core.models import BaseModel
 from typing import Type
 
