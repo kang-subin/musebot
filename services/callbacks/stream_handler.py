@@ -15,13 +15,19 @@ class StreamHandler(BaseCallbackHandler):
         self.on_complete = on_complete
         self.flush_interval = flush_interval
 
-        self.buffer = ""
-        self.full_text = ""
-        self.running = True
         self.lock = threading.Lock()
+        self.reset()
 
-        self.thread = threading.Thread(target=self._flush_loop)
+    def reset(self):
+        with self.lock:
+            self.buffer = ""
+            self.full_text = ""
+        self.running = True
+        self.thread = threading.Thread(target=self._flush_loop, daemon=True)
         self.thread.start()
+
+    def on_llm_start(self, *args, **kwargs):
+        self.reset()
 
     def on_llm_new_token(self, token: str, **kwargs):
         with self.lock:
@@ -40,7 +46,8 @@ class StreamHandler(BaseCallbackHandler):
 
     def on_llm_end(self, *args, **kwargs):
         self.running = False
-        self.thread.join()
+        if self.thread.is_alive():
+            self.thread.join()
 
         if self.on_complete:
             self.on_complete(self.full_text)
