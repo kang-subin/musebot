@@ -11,17 +11,14 @@ print("[DEBUG] StreamHandler init signature:", inspect.signature(sh.StreamHandle
 
 
 def main():
-    # 토큰 나올 때마다 호출
     def on_chunk(chunk: str):
      print(f"[CHUNK] {repr(chunk)}\n", end="")
 
 
-    # 전체 토큰이 끝나면 호출
     def on_complete(full_text: str):
         print("\n\n[STREAM COMPLETE]")
-        print(full_text)  # 전체 결과 한 번 더 출력
+        print(full_text)
 
-    # 콜백을 ChatService에 전달
     chat_service = ChatService(
         on_chunk=on_chunk,
         on_complete=on_complete
@@ -37,7 +34,6 @@ def main():
             print("종료합니다.")
             break
 
-        # 메시지 처리 → 스트리밍 출력은 콜백에서 바로 실행됨
         result, prompt_used = chat_service.process_message(user_input)
 
         if prompt_used:

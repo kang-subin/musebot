@@ -6,7 +6,7 @@ class IntentService:
         self.intent_keywords = {
             "translation": ["번역", "translate"],
             "summarization": ["요약", "summarize"],
-            "date_calculation": ["며칠", "d-day", "디데이", "언제까지", "며칠 후", "며칠 전"],
+            "date_calculation": ["며칠", "d-day", "디데이", "언제까지", "며칠 후", "며칠 전", "내일", "모레", "다음주", "이번주", "까지"],
             "time_conversion": ["시간", "몇 시", "몇시", "current time", "time in", "지금 시각", "현재 시각"],
             "mental_care": ["감정", "sentiment", "기분"]
         }
