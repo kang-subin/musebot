@@ -1,0 +1,54 @@
+/* ===== 뮤즈봇 소개 박스 ===== */
+.intro-box {
+    padding: 12px;
+    border-radius: 12px;
+    background-color: #f0f2f6;
+    margin-bottom: 20px;
+    font-size: 14px;
+}
+
+/* ===== 유저 말풍선 ===== */
+.user-bubble {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 8px;
+}
+.user-bubble div {
+    background-color: #007AFF;
+    color: white;
+    padding: 10px 14px;
+    border-radius: 16px;
+    max-width: 70%;
+    word-wrap: break-word;
+}
+
+/* ===== 봇 말풍선 ===== */
+.bot-bubble {
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 8px;
+}
+.bot-bubble div {
+    background-color: #E5E5EA;
+    color: black;
+    padding: 10px 14px;
+    border-radius: 16px;
+    max-width: 70%;
+    word-wrap: break-word;
+}
+
+/* ===== 타이핑 애니메이션 (선택) ===== */
+.typing {
+    overflow: hidden;
+    border-right: .10em solid #7b68ee;
+    white-space: nowrap;
+    animation: typing 2s steps(40, end), blink-caret .75s step-end infinite;
+}
+@keyframes typing {
+    from { width: 0 }
+    to { width: 100% }
+}
+@keyframes blink-caret {
+    from, to { border-color: transparent }
+    50% { border-color: #7b68ee; }
+}

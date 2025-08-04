@@ -1,3 +1,6 @@
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 import json
 from services.chat_service import ChatService
 import services.callbacks.stream_handler as sh
@@ -10,7 +13,8 @@ print("[DEBUG] StreamHandler init signature:", inspect.signature(sh.StreamHandle
 def main():
     # 토큰 나올 때마다 호출
     def on_chunk(chunk: str):
-        print(chunk, end="", flush=True)  # 실시간 출력
+     print(f"[CHUNK] {repr(chunk)}\n", end="")
+
 
     # 전체 토큰이 끝나면 호출
     def on_complete(full_text: str):
