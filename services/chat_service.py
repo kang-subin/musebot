@@ -91,4 +91,4 @@ class ChatService:
             context_intent=intent
         )
 
-        return parsed_result, processed_prompt_template_content
+        return parsed_result
